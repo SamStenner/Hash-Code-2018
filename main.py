@@ -4,7 +4,7 @@ columnNumber = None
 vehicleNumber = None
 ridesNumber = None
 bonusFactor = None
-rideList = None
+rideList = []
 totalTime = None
 map = None
 carPositionList = None
@@ -32,5 +32,16 @@ def readFile(fileName):
         carPositionList = [[0,0] for  number in vehicleNumber]
 
 
+readFile("a_example.in")
+for i in carPositionList:
+    print(i)
 
+
+
+def calc_dist(ride_index):
+    ride = rideList[ride_index]
+    d_x = abs(ride[0] - ride[2])
+    d_y = abs(ride[1] - ride[3])
+    d_xy = d_x + d_y
+    print(d_xy)
 
