@@ -62,6 +62,10 @@ def simulate():
         car[3] = select_journey(car)
     while not finished:
         for carIndex, car in enumerate(carList, 0):
+         #   print("")
+         #   print("Car " + str(carIndex) + ": ")
+         #   print(car[0], car[1], car[2])
+         #   print(car[3])
             if car[2] == False:
                 ride = rideList[car[3]]
                 if car[0] == ride[0] and car[1] == ride[1] and time >= ride[4]:
@@ -72,12 +76,14 @@ def simulate():
                     car[1] = y
             if car[2] == True:
                 current_ride = rideList[car[3]]
-                if car[0] == current_ride[2] == True and car[1] == current_ride[3]:
-                    car[2] = False
-                    rideList[car[3]] = None
-                    car[3] = select_journey(car)
-                else:
-                    car[0], car[2] = update_car_coords(car[0], car[1], current_ride[2], current_ride[3])
+                if car[0] == current_ride[2] and car[1] == current_ride[3]:
+                    # Record
+                    print(current_ride)
+                    journey = select_journey(car)
+                    if journey != -1:
+                        car[3] = select_journey(car)
+
+                car[0], car[1] = update_car_coords(car[0], car[1], current_ride[2], current_ride[3])
         if time < totalTime:
             time += 1
         else:
@@ -86,14 +92,16 @@ def simulate():
 
 
 def select_journey(car):
+    car[2] = False
     best_score = 99999999999999
-    best_ride_index = 0
+    best_ride_index = -1
     for i in range(0, len(rideList)):
-        if rideList[i] is not None:
+        if rideList[i][6] == False:
             score = calc_car_weight(car[0], car[1], rideList[i])
             if score < best_score:
                 best_ride_index = i
                 best_score = score
+    rideList[best_ride_index][6] = True
     return best_ride_index
 
 
