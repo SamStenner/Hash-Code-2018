@@ -28,13 +28,13 @@ def readFile(fileName):
             global totalTime
             totalTime = elements[5]
         else:
-            # calculate distance
-            # store distance in ride info in array
+            elements[5] = elements[5].strip('\n')
+            elements.append(False)
+            elements.append(calc_dist(elements[0], elements[1], elements[2], elements[3]))
             rideInfo = elements
-            rideInfo.append(0)# distance
             rideList.append(rideInfo)
         global carList
-        carList = [[0,0] for number in vehicleNumber]
+        carList = [[0, 0, False] for number in vehicleNumber]
 
 
 def calcWeightForCar(carPos, journey):
@@ -43,6 +43,7 @@ def calcWeightForCar(carPos, journey):
     distToStart = calc_dist(carPos[0], carPos[1], journey[0], journey[1])
     return lateTime - time - distToStart - distJourney
 
+
 def calc_dist(x1, y1, x2, y2):
     d_x = abs(int(x1) - int(x2))
     d_y = abs(int(y1) - int(y2))
@@ -50,10 +51,10 @@ def calc_dist(x1, y1, x2, y2):
 
 if __name__ == "__main__":
     readFile("a_example.in")
-    for i in range(len(rideList)):
-        rideList[i][6] = calc_dist(rideList[i][0], rideList[i][1], rideList[i][2], rideList[i][3])
     for i in rideList:
         print(i)
+
+
 
 
 
