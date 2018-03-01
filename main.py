@@ -7,6 +7,7 @@ bonusFactor = None
 rideList = []
 totalTime = None
 carList = []
+takenRideList = []
 
 def readFile(fileName):
     file = open(fileName, 'r')
@@ -62,10 +63,12 @@ def simulate():
         car[3] = select_journey(car)
     while not finished:
         for carIndex, car in enumerate(carList, 0):
-         #   print("")
-         #   print("Car " + str(carIndex) + ": ")
-         #   print(car[0], car[1], car[2])
-         #   print(car[3])
+          #  print("")
+          #  print("Car " + str(carIndex) + ": ")
+          #  print(car[0], car[1], car[2])
+          #  print(car[3])
+            if car is None:
+                continue
             if car[2] == False:
                 ride = rideList[car[3]]
                 if car[0] == ride[0] and car[1] == ride[1] and time >= ride[4]:
@@ -77,13 +80,14 @@ def simulate():
             if car[2] == True:
                 current_ride = rideList[car[3]]
                 if car[0] == current_ride[2] and car[1] == current_ride[3]:
-                    # Record
-                    print(current_ride)
                     journey = select_journey(car)
                     if journey != -1:
-                        car[3] = select_journey(car)
-
-                car[0], car[1] = update_car_coords(car[0], car[1], current_ride[2], current_ride[3])
+                        car[3] = journey
+                    else:
+                        assignRideOutput(carIndex, car[3])
+                        carList[carIndex] = None
+                else:
+                    car[0], car[1] = update_car_coords(car[0], car[1], current_ride[2], current_ride[3])
         if time < totalTime:
             time += 1
         else:
@@ -118,9 +122,25 @@ def update_car_coords(x1, y1, x2, y2):
             y1 = y1 + 1
     return x1, y1
 
+def assignRideOutput(carNum, rideNum):
+    global takenRideList
+    takenRideList[carNum][0] = takenRideList[carNum][0]+1
+    takenRideList[carNum][1].append(int(rideNum))
+
+def writeOutputFile(name):
+    file = open(name+".txt", "w")
+    for lineInfo in takenRideList:
+        rideList = ""
+        for ride in lineInfo[1]:
+            rideList = rideList + format("%d " % ride)
+        file.write(format("%d %s\n" % (int(lineInfo[0]), rideList)))
+    file.close()
+
 if __name__ == "__main__":
     readFile("a_example.in")
+    takenRideList = [[0, []] for int in range(vehicleNumber)]
     simulate()
+    writeOutputFile("test1")
 
 
 
