@@ -63,12 +63,12 @@ def simulate():
         car[3] = select_journey(car)
     while not finished:
         for carIndex, car in enumerate(carList, 0):
-          #  print("")
-          #  print("Car " + str(carIndex) + ": ")
-          #  print(car[0], car[1], car[2])
-          #  print(car[3])
             if car is None:
                 continue
+           # print("")
+           # print("Car " + str(carIndex) + ": ")
+           # print(car[0], car[1], car[2])
+           # print(car[3])
             if car[2] == False:
                 ride = rideList[car[3]]
                 if car[0] == ride[0] and car[1] == ride[1] and time >= ride[4]:
@@ -84,14 +84,16 @@ def simulate():
                     if journey != -1:
                         car[3] = journey
                     else:
-                        assignRideOutput(carIndex, car[3])
                         carList[carIndex] = None
+                        assignRideOutput(carIndex, car[3])
                 else:
                     car[0], car[1] = update_car_coords(car[0], car[1], current_ride[2], current_ride[3])
         if time < totalTime:
             time += 1
         else:
             finished = True
+    for lineInfo in takenRideList:
+        print(lineInfo)
     print("Simulation finished")
 
 
@@ -137,10 +139,10 @@ def writeOutputFile(name):
     file.close()
 
 if __name__ == "__main__":
-    readFile("a_example.in")
+    readFile("c_no_hurry.in")
     takenRideList = [[0, []] for int in range(vehicleNumber)]
     simulate()
-    writeOutputFile("test1")
+    writeOutputFile("test2.in")
 
 
 
